@@ -13,7 +13,7 @@ sprites.onCreated(SpriteKind.Player, function (sprite2) {
     startpos = 20
     list2 = []
     rock_sprite_images = []
-    itr = 1
+    itr = 0
     for (let index = 0; index < number_of_rocks; index++) {
         console.log(startpos)
         mySprite2 = sprites.create(img`
@@ -58,30 +58,30 @@ sprites.onCreated(SpriteKind.Player, function (sprite2) {
         startpos = startpos * randint(2, 6)
         itr += 1
     }
+    console.log("\"lenght of rock sprites\"")
+    console.log(list2.length)
+    console.log("\"Number of itr\"")
+    console.log(itr)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.rock, function (sprite, otherSprite) {
-    for (let value of rock_sprite_images) {
-        console.log(value)
-    }
     if (controller.A.isPressed()) {
-        itr = 1
+        itr = 0
         for (let index = 0; index < number_of_rocks; index++) {
-            console.log(rock_sprite_images[itr])
             rocksprites = list2[itr]
             rock_image = rock_sprite_images[itr]
             if (mySprite.overlapsWith(rocksprites) && rock_image == 2) {
+                console.log("\"I overlaped with ta full rock\"")
                 pause(animation_time)
                 rocksprites.setImage(assets.image`Part_rock`)
                 full_rock = 1
                 rock_sprite_images[itr] = full_rock
-                itr += 1
             } else if (mySprite.overlapsWith(rocksprites) && rock_image == 1) {
                 pause(animation_time)
                 rocksprites.setImage(assets.image`Emberal`)
                 full_rock = 0
                 rock_sprite_images[itr] = full_rock
-                itr += 1
             }
+            itr += 1
         }
     }
 })

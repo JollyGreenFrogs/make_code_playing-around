@@ -1,101 +1,110 @@
-namespace SpriteKind {
-    export const rock = SpriteKind.create()
-}
-controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    animation.runImageAnimation(
-    mySprite,
-    assets.animation`pickaxe-dig`,
-    animation_time,
-    false
-    )
-})
-sprites.onCreated(SpriteKind.Player, function (sprite2) {
+@namespace
+class SpriteKind:
+    rock = SpriteKind.create()
+
+def on_a_pressed():
+    animation.run_image_animation(mySprite,
+        assets.animation("""
+            pickaxe-dig
+            """),
+        animation_time,
+        False)
+controller.A.on_event(ControllerButtonEvent.PRESSED, on_a_pressed)
+
+def on_on_created(sprite2):
+    global startpos, list2, rock_sprite_images, itr, mySprite2, full_rock
     startpos = 20
     list2 = []
-    rock_image = []
+    rock_sprite_images = []
     itr = 1
-    for (let index = 0; index < 3; index++) {
-        console.log(startpos)
-        mySprite2 = sprites.create(img`
-            ................................
-            ................................
-            ................................
-            ................................
-            ................................
-            ................................
-            ................................
-            ................................
-            ................................
-            ................................
-            ................................
-            ................................
-            ................................
-            ........ffffff..................
-            ........ffffff..................
-            .......feeeeeeff................
-            .......feeeeeeff................
-            .......feeeeeeff................
-            .......feeeeeeff................
-            .......feeeeeeff................
-            .......feeeeeefffff....ffffff...
-            .......feeeeeefffff....ffffff...
-            .....ffeeeeeeeeeeeef..feeeeeeff.
-            .....ffeeeeeeeeeeeef..feeeeeeff.
-            ....feeeeeeeeeeeeeeffffeeeeeeeef
-            ....feeeeeeeeeeeeeefeeeeeeeeeeef
-            ....feeeeeeeeeeeeeefeeeeeeeeeeef
-            .fffeeeeeeeeeeeeeeefeeeeeeeeeeef
-            .fffeeeeeeeeeeeeeeefeeeeeeeeeeef
-            feeeeeeeeeeeeeeeeeeeffeeeeeeeeef
-            feeeeeeeeeeeeeeeeeeeffeeeeeeeeef
-            feeeeeeeeeeeeeeeeeeeffeeeeeeeeef
-            `, SpriteKind.rock)
+    for index in range(number_of_rocks):
+        print(startpos)
+        mySprite2 = sprites.create(img("""
+                ................................
+                ................................
+                ................................
+                ................................
+                ................................
+                ................................
+                ................................
+                ................................
+                ................................
+                ................................
+                ................................
+                ................................
+                ................................
+                ........ffffff..................
+                ........ffffff..................
+                .......feeeeeeff................
+                .......feeeeeeff................
+                .......feeeeeeff................
+                .......feeeeeeff................
+                .......feeeeeeff................
+                .......feeeeeefffff....ffffff...
+                .......feeeeeefffff....ffffff...
+                .....ffeeeeeeeeeeeef..feeeeeeff.
+                .....ffeeeeeeeeeeeef..feeeeeeff.
+                ....feeeeeeeeeeeeeeffffeeeeeeeef
+                ....feeeeeeeeeeeeeefeeeeeeeeeeef
+                ....feeeeeeeeeeeeeefeeeeeeeeeeef
+                .fffeeeeeeeeeeeeeeefeeeeeeeeeeef
+                .fffeeeeeeeeeeeeeeefeeeeeeeeeeef
+                feeeeeeeeeeeeeeeeeeeffeeeeeeeeef
+                feeeeeeeeeeeeeeeeeeeffeeeeeeeeef
+                feeeeeeeeeeeeeeeeeeeffeeeeeeeeef
+                """),
+            SpriteKind.rock)
         full_rock = 2
-        mySprite2.setPosition(startpos, 95)
-        list2.unshift(mySprite2)
-        rock_image.insertAt(mySprite2, full_rock)
+        mySprite2.set_position(startpos, 95)
+        list2.insert_at(itr, mySprite2)
+        rock_sprite_images.insert_at(itr, full_rock)
         startpos = 20
         startpos = startpos * randint(2, 6)
         itr += 1
-    }
-})
-sprites.onOverlap(SpriteKind.Player, SpriteKind.rock, function (sprite, otherSprite) {
-    for (let value of rock_image) {
-        console.log(value)
-    }
-    if (controller.A.isPressed()) {
+sprites.on_created(SpriteKind.player, on_on_created)
+
+def on_on_overlap(sprite, otherSprite):
+    global itr, rocksprites, rock_image, full_rock
+    for value in rock_sprite_images:
+        print(value)
+    if controller.A.is_pressed():
         itr = 1
-        for (let rocksprites of list2) {
-            console.log(rock_image[itr])
-            if (mySprite.overlapsWith(rocksprites) && rock_image[itr] == 2) {
+        for index2 in range(number_of_rocks):
+            print(rock_sprite_images[itr])
+            rocksprites = list2[itr]
+            rock_image = rock_sprite_images[itr]
+            if mySprite.overlaps_with(rocksprites) and rock_image == 2:
                 pause(animation_time)
-                rocksprites.setImage(assets.image`Part_rock`)
+                rocksprites.set_image(assets.image("""
+                    Part_rock
+                    """))
                 full_rock = 1
-                rock_image[itr] = full_rock
+                rock_sprite_images[itr] = full_rock
                 itr += 1
-            } else if (mySprite.overlapsWith(rocksprites) && rock_image[itr] == 1) {
+            elif mySprite.overlaps_with(rocksprites) and rock_image == 1:
                 pause(animation_time)
-                rocksprites.setImage(assets.image`Emberal`)
+                rocksprites.set_image(assets.image("""
+                    Emberal
+                    """))
                 full_rock = 0
-                rock_image[itr] = full_rock
+                rock_sprite_images[itr] = full_rock
                 itr += 1
-            }
-        }
-    }
-})
-let full_rock = 0
-let mySprite2: Sprite = null
-let itr = 0
-let rock_image: number[] = []
-let list2: Sprite[] = []
-let startpos = 0
-let mySprite: Sprite = null
-let animation_time = 0
-music.play(music.createSong(hex`
-            00780004080200
-            `), music.PlaybackMode.InBackground)
+sprites.on_overlap(SpriteKind.player, SpriteKind.rock, on_on_overlap)
+
+rock_image = 0
+rocksprites: Sprite = None
+full_rock = 0
+mySprite2: Sprite = None
+itr = 0
+rock_sprite_images: List[number] = []
+list2: List[Sprite] = []
+startpos = 0
+mySprite: Sprite = None
+number_of_rocks = 0
+animation_time = 0
 animation_time = 200
-scene.setBackgroundImage(img`
+number_of_rocks = 3
+scene.set_background_image(img("""
     cccbbbbbbbbbbccccccccccccccccccccccccccccccccccbbbbbbbbbbbbbbbbccccccccccccbbbbbbbbbbbbccccccccccbbbbbbbbbbbbccccccccccccccccccccbbbbbcccccccccccccccccccccccccc
     ccbbbbbbbbbbbcccccccccccccbbbbbbbbcccccccccccccbbbbbbbbbbbbbbbbbbccccccccccbbbbbbbbbbbbbbbbccccccbbbbbbbbbbbbbbccccccccccccccbbbbbbbbbbbcccccccccccccccccccccccc
     ccbbbbbbbbbbbcccccccccccccbbbbbbbbbbcccccccccccbbbbbbbbbbbbbbbbbbbcccccccccbbbbbbbbbbbbbbbbbcccccbbbbbbbbbbbbbbbbbccccccccccbbbbbbbbbbbbbbbccccccccccccccccccccc
@@ -216,7 +225,9 @@ scene.setBackgroundImage(img`
     ddddddddddddddeddddddddddddddddddddddddddddddddddddddddddddddddedddddddddddddddddddddddddeeeeeddddddddddddddddddddddddeddddedddddddddddddddddddeddddddddddddddee
     ddddddeddddddddddddddddddddddddddddddddddddddddddddddedddddddddedddddddddddddddeeddddddddddddddddddddddddddddddddddddddeddeddddddddddddddddddddddddddddddddddddd
     dddddddddddddddddddddddddddddddddddddddddddddddddddddeeddddddddedddddddddddddddeddddddddddddddddddddddddddddddddddddddddeedddddddddddddddddddddddddddddddddddddd
-    `)
-mySprite = sprites.create(assets.image`pickaxe`, SpriteKind.Player)
-mySprite.setPosition(74, 88)
-controller.moveSprite(mySprite)
+    """))
+mySprite = sprites.create(assets.image("""
+    pickaxe
+    """), SpriteKind.player)
+mySprite.set_position(74, 88)
+controller.move_sprite(mySprite)
