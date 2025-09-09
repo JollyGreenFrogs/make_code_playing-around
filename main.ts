@@ -53,7 +53,7 @@ sprites.onCreated(SpriteKind.Player, function (sprite2) {
         full_rock = 2
         mySprite2.setPosition(startpos, 95)
         list2.unshift(mySprite2)
-        rock_image.insertAt(mySprite2, full_rock)
+        rock_image.insertAt(0, full_rock)
         startpos = 20
         startpos = startpos * randint(2, 6)
         itr += 1
@@ -91,8 +91,8 @@ let list2: Sprite[] = []
 let startpos = 0
 let mySprite: Sprite = null
 let animation_time = 0
-music.play(music.createSong(hex`0078000408020300001c00010a006400f4016400000400000000000000000000000000050000042a0004000800012c08000c0001290c001000012510001400012214001800011e18001c00011b1c002000011901001c000f05001202c102c20100040500280000006400280003140006020004300000000400012c04000800012908000c0001250c001000012210001400011e14001800011b18001c0001191c002000011902001c000c960064006d019001000478002c010000640032000000000a060005240008000c00012c0c001000012910001400012514001800012218001c00011e1c002000011b`), music.PlaybackMode.InBackground)
 animation_time = 200
+let number_of_rocks = 3
 scene.setBackgroundImage(img`
     cccbbbbbbbbbbccccccccccccccccccccccccccccccccccbbbbbbbbbbbbbbbbccccccccccccbbbbbbbbbbbbccccccccccbbbbbbbbbbbbccccccccccccccccccccbbbbbcccccccccccccccccccccccccc
     ccbbbbbbbbbbbcccccccccccccbbbbbbbbcccccccccccccbbbbbbbbbbbbbbbbbbccccccccccbbbbbbbbbbbbbbbbccccccbbbbbbbbbbbbbbccccccccccccccbbbbbbbbbbbcccccccccccccccccccccccc
